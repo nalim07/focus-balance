@@ -64,6 +64,10 @@ Launch it from the application menu or with:
 focus-balance
 ```
 
+## Cross-platform builds
+
+See [docs/building.md](docs/building.md) for verified build prerequisites and commands for Windows (`.msi`), macOS (`.dmg`), and Debian Linux (`.deb`).
+
 ## Notifications and sound
 
 In **Settings → Notifications**:
