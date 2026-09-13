@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Desktop permissions","local":true,"windows":["main"],"permissions":["core:default","notification:default","sql:default","global-shortcut:default","core:window:allow-set-fullscreen","core:window:allow-set-always-on-top","core:window:allow-set-focus"]}}

@@ -1,0 +1,9 @@
+{
+  "$schema":"https://schema.tauri.app/config/2",
+  "productName":"Focus Balance",
+  "version":"0.1.0",
+  "identifier":"com.focusbalance.app",
+  "build":{"beforeDevCommand":"npm run dev","devUrl":"http://localhost:1420","beforeBuildCommand":"npm run build","frontendDist":"../dist"},
+  "app":{"windows":[{"label":"main","title":"Focus Balance","width":980,"height":680,"minWidth":760,"minHeight":560,"resizable":true,"fullscreen":false,"visible":true}],"security":{"csp":null},"trayIcon":{"iconPath":"icons/icon.png","tooltip":"Focus Balance","menuOnLeftClick":false}},
+  "bundle":{"active":true,"icon":["icons/icon.png"],"targets":["deb","appimage","msi","dmg"],"shortDescription":"A lightweight focus and rest timer","longDescription":"Focus Balance helps users maintain a healthy work/rest rhythm.","linux":{"deb":{"depends":[]}}}
+}

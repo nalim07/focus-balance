@@ -1,0 +1,8 @@
+import type {Session,Settings,Template} from '../types';
+const KEY='focus-balance-v1';
+const defaults:Settings={focusDuration:25*60,shortBreakDuration:5*60,longBreakDuration:15*60,sessionsBeforeLongBreak:4,autoStartBreak:true,autoStartFocus:false,soundEnabled:true,notificationsEnabled:true,theme:'system',breakEnforcement:'guided',launchAtStartup:false,startMinimized:false};
+const templates:Template[]=[{id:'pomodoro',name:'Classic Pomodoro',focusDuration:1500,shortBreakDuration:300,longBreakDuration:900,sessionsBeforeLongBreak:4},{id:'deep',name:'Deep Work',focusDuration:3000,shortBreakDuration:600,longBreakDuration:1200,sessionsBeforeLongBreak:3},{id:'5217',name:'52 / 17',focusDuration:3120,shortBreakDuration:1020,longBreakDuration:1020,sessionsBeforeLongBreak:1},{id:'9020',name:'90 / 20',focusDuration:5400,shortBreakDuration:1200,longBreakDuration:1200,sessionsBeforeLongBreak:1}];
+interface Store{settings:Settings;sessions:Session[];templates:Template[]}
+function read():Store {try{return {...{settings:defaults,sessions:[],templates},...JSON.parse(localStorage.getItem(KEY)||'{}')}}catch{return {settings:defaults,sessions:[],templates}}}
+function write(s:Store){localStorage.setItem(KEY,JSON.stringify(s))}
+export const db={get:read,settings(s:Settings){const x=read();x.settings=s;write(x)},sessions(){return read().sessions},saveSession(s:Session){const x=read();const i=x.sessions.findIndex(v=>v.id===s.id);if(i>=0)x.sessions[i]=s;else x.sessions.unshift(s);write(x)},templates(){return read().templates},saveTemplates(templates:Template[]){const x=read();x.templates=templates;write(x)}};
