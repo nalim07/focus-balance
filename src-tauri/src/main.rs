@@ -1,12 +1,38 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 use tauri::Manager;
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum BreakWindowAction {
+    Show,
+    Unminimize,
+    Fullscreen,
+    AlwaysOnTop,
+    Focus,
+}
+
+fn enter_break_actions() -> [BreakWindowAction; 5] {
+    [
+        BreakWindowAction::Show,
+        BreakWindowAction::Unminimize,
+        BreakWindowAction::Fullscreen,
+        BreakWindowAction::AlwaysOnTop,
+        BreakWindowAction::Focus,
+    ]
+}
+
 #[tauri::command]
 fn show_break_window(app: tauri::AppHandle) -> Result<(), String> {
     if let Some(w) = app.get_webview_window("main") {
-        w.set_fullscreen(true).map_err(|e| e.to_string())?;
-        let _ = w.set_always_on_top(true);
-        let _ = w.set_focus();
+        for action in enter_break_actions() {
+            match action {
+                BreakWindowAction::Show => w.show(),
+                BreakWindowAction::Unminimize => w.unminimize(),
+                BreakWindowAction::Fullscreen => w.set_fullscreen(true),
+                BreakWindowAction::AlwaysOnTop => w.set_always_on_top(true),
+                BreakWindowAction::Focus => w.set_focus(),
+            }
+            .map_err(|e| e.to_string())?;
+        }
     }
     Ok(())
 }
@@ -18,6 +44,25 @@ fn hide_break_window(app: tauri::AppHandle) -> Result<(), String> {
         w.set_fullscreen(false).map_err(|e| e.to_string())?;
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn entering_a_break_restores_and_raises_the_window_before_focusing_it() {
+        assert_eq!(
+            enter_break_actions(),
+            [
+                BreakWindowAction::Show,
+                BreakWindowAction::Unminimize,
+                BreakWindowAction::Fullscreen,
+                BreakWindowAction::AlwaysOnTop,
+                BreakWindowAction::Focus,
+            ]
+        );
+    }
 }
 
 fn main() {
